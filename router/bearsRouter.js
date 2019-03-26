@@ -38,7 +38,9 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   if (req.body.name === "") {
-    res.status(400).json({ message: "Bad Request. Must provide a name" });
+    return res
+      .status(400)
+      .json({ message: "Bad Request. Must provide a name" });
   }
   try {
     const newBear = await db("bears").insert(req.body);
@@ -52,6 +54,38 @@ router.post("/", async (req, res) => {
   } catch {
     res.status(500).json({ message: "Internal Server Error" });
   }
+});
+
+router.put("/:id", (req, res) => {
+  db("bears")
+    .where({ id: req.params.id })
+    .update(req.body)
+    .then(count => {
+      if (count > 0) {
+        res.status(200).json(count);
+      } else {
+        res.status(404).json({ message: "bear not found. can not update" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  db("bears")
+    .where({ id: req.params.id })
+    .del()
+    .then(count => {
+      if (count > 0) {
+        res.status(204).end();
+      } else {
+        res.status(404).json({ message: "Bear not found" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;

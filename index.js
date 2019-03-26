@@ -93,23 +93,6 @@ server.put("/api/zoos/:id", (req, res) => {
       res.status(500).json(err);
     });
 });
-//router.post('/', (req, res) => {
-//// get back an array with the last id generated: [ 3 ]
-//db('roles')
-//.insert(req.body)
-//.then(ids => {
-//const id = ids[0];
-//db('roles')
-//.where({ id })
-//.first()
-//.then(role => {
-//res.status(201).json(role);
-//});
-//})
-//.catch(error => {
-//res.status(500).json(error);
-//});
-//});
 
 const port = 3300;
 server.listen(port, function() {
